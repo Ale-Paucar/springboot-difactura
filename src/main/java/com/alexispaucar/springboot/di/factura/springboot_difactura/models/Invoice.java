@@ -1,6 +1,9 @@
 package com.alexispaucar.springboot.di.factura.springboot_difactura.models;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,12 +12,32 @@ import java.util.List;
 @Component
 public class Invoice {
 
+
     @Autowired
     private Client client;
-    @Value(("${invoice.description}"))
+    @Value(("${invoice.description.office}"))
     private String description;
     @Autowired
+    @Qualifier("itemsInvoiceOffice")
     private List<Item> items;
+
+    @PostConstruct
+    public void init(){
+        System.out.println("Creating invoice component");
+        System.out.println(client);
+        System.out.println(description);
+    }
+
+    @PreDestroy
+    public void destro(){
+        System.out.println("destroying invoice component");
+    }
+
+    public Invoice() {
+        System.out.println("Creating invoice component");
+        System.out.println(client);
+        System.out.println(description);
+    }
 
     public Client getClient() {
         return client;
